@@ -37,3 +37,12 @@ docker push <your-login>/<your-image-name>
 ```
 docker-machine rm docker-host
 ```
+## Run app from separate containers
+Prerequisites:
+- pull mongodb image: `docker pull mongo:latest`
+- create docker network for app: `docker network create reddit`
+```
+docker run -d --network=reddit --network-alias=post <your-login>/post:1.
+docker run -d --network=reddit --network-alias=comment <your-login>/comment:1.0
+docker run -d --network=reddit -p 9292:9292 <your-login>/ui:1.0
+```
