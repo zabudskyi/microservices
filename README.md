@@ -41,6 +41,13 @@ docker-machine rm docker-host
 Prerequisites:
 - pull mongodb image: `docker pull mongo:latest`
 - create docker network for app: `docker network create reddit`
+- build images
+```
+docker build -t <your-login>/post:1.0 ./post-py
+docker build -t <your-login>/comment:1.0 ./comment
+docker build -t <your-login>/ui:1.0 ./ui
+```
+Run app
 ```
 docker run -d --network=reddit --network-alias=post <your-login>/post:1.
 docker run -d --network=reddit --network-alias=comment <your-login>/comment:1.0
