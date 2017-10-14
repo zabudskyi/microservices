@@ -4,7 +4,7 @@ Prerequisites:
 - install docker-machine: https://docs.docker.com/machine/install-machine/
 - install GCloud SDK: https://cloud.google.com/sdk/
   Run `gcloud init` and `gcloud auth application-default login`
-## Create your image with reddit app with GCE (Monolith)
+## Create image and run container with GCE (Monolith)
 1. Create docker-host
 ```
 docker-machine create --driver google \
@@ -41,15 +41,23 @@ docker-machine rm docker-host
 Prerequisites:
 - pull mongodb image: `docker pull mongo:latest`
 - create docker network for app: `docker network create reddit`
-- build images
+- build images:
 ```
 docker build -t <your-login>/post:1.0 ./post-py
 docker build -t <your-login>/comment:1.0 ./comment
-docker build -t <your-login>/ui:1.0 ./ui
+docker build -t <your-login>/ui:2.2 ./ui
 ```
+- create volume so data remains after container restarts: `docker volume create reddit_db`
 Run app
 ```
-docker run -d --network=reddit --network-alias=post <your-login>/post:1.
-docker run -d --network=reddit --network-alias=comment <your-login>/comment:1.0
-docker run -d --network=reddit -p 9292:9292 <your-login>/ui:1.0
+docker run -d --network=reddit -v reddit_db:/data/db --network-alias=post_db --network-alias=comment_db_container mongo:latest
+docker run -d --network=reddit --network-alias=post_container <your-login>/post:1.0
+docker run -d --network=reddit --network-alias=comment_container <your-login>/comment:1.0
+docker run -d --network=reddit -p 9292:9292 <your-login>/ui:2.2
+```
+## Debugging container
+```
+docker run -d --name=logtest --network=reddit -p 9292:9292 coul/ui:2.2
+docker logs logtest
+docker attach logtest
 ```
