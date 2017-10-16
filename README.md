@@ -55,7 +55,7 @@ docker run -d --network=reddit --network-alias=post_container <your-login>/post:
 docker run -d --network=reddit --network-alias=comment_container <your-login>/comment:1.0
 docker run -d --network=reddit -p 9292:9292 <your-login>/ui:2.2
 ```
-### Run ui and db containers in separate network-alias
+### Run ui and db containers in separate networks
 Prerequisites:
 - create networks:
 ```
@@ -81,7 +81,10 @@ docker-compose up -d
 ```
 Yes, so easy
 ## Debugging
-1. Be sure you are in required docker environment (issued `eval $(docker-machine env docker-host)`)
+1. Be sure you are in required docker environment and issued
+   ```
+   eval $(docker-machine env docker-host)
+   ```
    ssh to docker-host to check containers are run there `docker-machine ssh docker-host "docker ps"`
 2. Check logs and attach to container to verify all is run as expected.   
 ```
@@ -89,4 +92,5 @@ docker run -d --name=logtest --network=reddit -p 9292:9292 <your-login>/ui:2.2
 docker logs logtest
 docker attach logtest
 ```
-3. To rebuild images with docker-compose run `docker-compose build` and then `docker-compose up` to make changes.
+3. Run some commands in running container `docker exec -ti microservices_post_1 sh -c "ifconfig"`
+4. To rebuild images with docker-compose run `docker-compose build` and then `docker-compose up -d` to make changes.
