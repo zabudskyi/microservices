@@ -3,7 +3,7 @@ services:
   mongo_db:
     image: mongo:latest
     volumes:
-      - post_db:/data/db
+      - post_db:${DB_FOLDER}
     networks:
       back_net:
         aliases:
@@ -11,14 +11,14 @@ services:
           - comment_db_container
   ui:
     build: ./ui
-    image: ${USERNAME}/ui:2.2
+    image: ${USERNAME}/ui:${UI_TAG}
     ports:
-      - 9292:9292/tcp
+      - ${PUMA_PORT}:${PUMA_PORT}/tcp
     networks:
       - front_net
   post:
     build: ./post-py
-    image: ${USERNAME}/post:1.0
+    image: ${USERNAME}/post:${POST_TAG}
     networks:
       back_net:
         aliases:
@@ -28,7 +28,7 @@ services:
           - post_container
   comment:
     build: ./ui
-    image: ${USERNAME}/comment:1.0
+    image: ${USERNAME}/comment:${COMMENT_TAG}
     networks:
       back_net:
         aliases:

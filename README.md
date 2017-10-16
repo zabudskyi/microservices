@@ -76,6 +76,7 @@ docker network connect front_net post
 docker network connect front_net comment
 ```
 ## Run app with docker-compose
+Modify `.env` to change variables in a way you like
 ```
 docker-compose up -d
 ```
