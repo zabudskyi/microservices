@@ -13,7 +13,7 @@ services:
     build: ./ui
     image: ${USERNAME}/ui:${UI_TAG}
     ports:
-      - ${PUMA_PORT}:${PUMA_PORT}/tcp
+      - ${HOST_PUMA_PORT}:9292/tcp
     networks:
       - front_net
   post:
