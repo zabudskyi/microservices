@@ -10,14 +10,12 @@ services:
           - post_db_container
           - comment_db_container
   ui:
-    build: ./ui
     image: ${USERNAME}/ui:${UI_TAG}
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
       - front_net
   post:
-    build: ./post-py
     image: ${USERNAME}/post:${POST_TAG}
     networks:
       back_net:
@@ -27,7 +25,6 @@ services:
         aliases:
           - post_container
   comment:
-    build: ./comment
     image: ${USERNAME}/comment:${COMMENT_TAG}
     networks:
       back_net:
@@ -36,6 +33,14 @@ services:
       front_net:
         aliases:
           - comment_container
+  prometheus:
+    image: ${USERNAME}/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      back_net:
+      front_net:
+
 volumes:
   post_db:
 
