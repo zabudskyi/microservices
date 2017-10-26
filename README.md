@@ -50,14 +50,48 @@ docker build -t <your-login>/ui:2.2 ./ui
 - create volume so data remains after container restarts: `docker volume create reddit_db`
 Run app
 ```
-docker run -d --network=reddit -v reddit_db:/data/db --network-alias=post_db --network-alias=comment_db_container mongo:latest
+docker run -d --network=reddit -v reddit_db:/data/db --network-alias=post_db_container --network-alias=comment_db_container mongo:latest
 docker run -d --network=reddit --network-alias=post_container <your-login>/post:1.0
 docker run -d --network=reddit --network-alias=comment_container <your-login>/comment:1.0
 docker run -d --network=reddit -p 9292:9292 <your-login>/ui:2.2
 ```
-## Debugging container
+### Run ui and db containers in separate networks
+Prerequisites:
+- create networks:
 ```
-docker run -d --name=logtest --network=reddit -p 9292:9292 coul/ui:2.2
+docker network create front_net --subnet=10.0.1.0/24
+docker network create back_net --subnet=10.0.2.0/24
+```
+1. Run db, comment and post containers in `back_net` network and ui container in `front_net`
+```
+docker run -d --network=back_net --name mongodb -v reddit_db:/data/db \
+              --network-alias=comment_db_container --network-alias=post_db_container mongo:latest
+docker run -d --network=back_net --name post --network-alias=post_container <your-login>/post:1.0
+docker run -d --network=back_net --name comment --network-alias=comment_container <your-login>/comment:1.0
+docker run -d --network=front_net --name ui -p 9292:9292 <your-login>/ui:2.2
+```
+2. Connect post and comment containers to `front_net`:
+```
+docker network connect front_net post
+docker network connect front_net comment
+```
+## Run app with docker-compose
+Modify `.env` to change variables in a way you like
+```
+docker-compose up -d
+```
+Yes, so easy
+## Debugging
+1. Be sure you are in required docker environment and issued
+   ```
+   eval $(docker-machine env docker-host)
+   ```
+   ssh to docker-host to check containers are run there `docker-machine ssh docker-host "docker ps"`
+2. Check logs and attach to container to verify all is run as expected.   
+```
+docker run -d --name=logtest --network=reddit -p 9292:9292 <your-login>/ui:2.2
 docker logs logtest
 docker attach logtest
 ```
+3. Run some commands in running container `docker exec -ti microservices_post_1 sh -c "ifconfig"`
+4. To rebuild images with docker-compose run `docker-compose build` and then `docker-compose up -d` to make changes.
