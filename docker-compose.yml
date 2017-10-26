@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   mongo_db:
-    image: mongo:latest
+    image: mongo:3.4.10
     volumes:
       - post_db:${DB_FOLDER}
     networks:
