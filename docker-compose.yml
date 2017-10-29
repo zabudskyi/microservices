@@ -56,6 +56,13 @@ services:
      back_net:
      front_net:
 
+  mongodb_exporter:
+    image: coul/mongodb_exporter:1.0
+    networks:
+      back_net:
+    environment:
+      - MONGODB_URL=mongodb://${COMPOSE_PROJECT_NAME}_mongo_db_1:27017
+
 volumes:
   post_db:
 
