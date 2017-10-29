@@ -77,11 +77,12 @@ docker network connect front_net comment
 ```
 ## Run app with docker-compose
 ### Prerequisites:
-`docker-compose.yml` file includes monitoring containers as well so prometheus container has to be build first
+`docker-compose.yml` file includes monitoring containers as well so prometheus container has to be built first
 ```
 docker build -t <your-login>/prometheus prometheus/
 ```
-Prometheus is available at 9090 port. It shows services status, host and mongodb metrics. 
+Prometheus is available at 9090 port. It shows services status, host and mongodb metrics.
+### Run docker-compose
 Modify `.env` to change variables in a way you like
 ```
 docker-compose up -d
