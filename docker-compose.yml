@@ -10,14 +10,12 @@ services:
           - post_db_container
           - comment_db_container
   ui:
-    build: ./ui
     image: ${USERNAME}/ui:${UI_TAG}
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
       - front_net
   post:
-    build: ./post-py
     image: ${USERNAME}/post:${POST_TAG}
     networks:
       back_net:
@@ -27,7 +25,6 @@ services:
         aliases:
           - post_container
   comment:
-    build: ./comment
     image: ${USERNAME}/comment:${COMMENT_TAG}
     networks:
       back_net:
@@ -36,6 +33,36 @@ services:
       front_net:
         aliases:
           - comment_container
+  prometheus:
+    image: ${USERNAME}/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      back_net:
+      front_net:
+
+  node-exporter:
+    image: prom/node-exporter:v0.15.0
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+     back_net:
+     front_net:
+
+  mongodb_exporter:
+    image: coul/mongodb_exporter:1.0
+    networks:
+      back_net:
+    environment:
+      - MONGODB_URL=mongodb://${COMPOSE_PROJECT_NAME}_mongo_db_1:27017
+
 volumes:
   post_db:
 
