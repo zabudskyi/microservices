@@ -34,7 +34,7 @@ services:
         aliases:
           - comment_container
   prometheus:
-    image: ${USERNAME}/prometheus
+    image: ${USERNAME}/prometheus:2.0
     ports:
       - '9090:9090'
     networks:
