@@ -102,3 +102,13 @@ docker attach logtest
 ```
 3. Run some commands in running container `docker exec -ti microservices_post_1 sh -c "ifconfig"`
 4. To rebuild images with docker-compose run `docker-compose build` and then `docker-compose up -d` to make changes.
+## Monitoring services
+- prometheus (available at 9090 port)
+- cAdvisor (available at 8080 port)
+- Grafana (available at 3000 port)
+Admin username and password can be specified in grafana docker-copmpose section
+```
+environment:
+  - GF_SECURITY_ADMIN_USER=admin
+  - GF_SECURITY_ADMIN_PASSWORD=secret
+```
