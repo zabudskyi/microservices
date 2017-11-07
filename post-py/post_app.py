@@ -10,6 +10,7 @@ import time
 CONTENT_TYPE_LATEST = str('text/plain; version=0.0.4; charset=utf-8')
 REQUEST_DB_LATENCY = prometheus_client.Histogram('post_read_db_seconds', 'Request DB time')
 POST_COUNT = prometheus_client.Counter('post_count', 'A counter of new posts')
+POST_SHOW_COUNT = prometheus_client.Counter('post_show_count', 'A counter of posts show')
 
 mongo_host = os.getenv('POST_DATABASE_HOST', '127.0.0.1')
 mongo_port = os.getenv('POST_DATABASE_PORT', '27017')
@@ -58,6 +59,7 @@ def get_post(id):
     stop_time = time.time()  # + 0.3
     resp_time = stop_time - start_time
     REQUEST_DB_LATENCY.observe(resp_time)
+    POST_SHOW_COUNT.inc()
     return dumps(post)
 
 
