@@ -77,13 +77,15 @@ docker network connect front_net comment
 ```
 ## Run app with docker-compose
 ### Prerequisites:
-`docker-compose.yml` file includes monitoring containers as well so prometheus container has to be built first
-```
-docker build -t <your-login>/prometheus prometheus/
-```
-Prometheus is available at 9090 port. It shows services status, host and mongodb metrics.
+Modify `.env` to change variables in a way you like. Change USERNAME variable to `<your-login>`
+
+Build the images:
+- ui, post and comment (use `docker_build.sh` script in appropriate folders)
+- mongodb exporter container (https://github.com/dcu/mongodb_exporter)
+- prometheus `docker build -t <your-login>/prometheus prometheus/`
+- alertmanager
+Modify alertmanager/config.yml with slack webhook info and run `docker build -t <your-login>/alertmanager alertmanager/`
 ### Run docker-compose
-Modify `.env` to change variables in a way you like
 ```
 docker-compose up -d
 ```
@@ -102,3 +104,14 @@ docker attach logtest
 ```
 3. Run some commands in running container `docker exec -ti microservices_post_1 sh -c "ifconfig"`
 4. To rebuild images with docker-compose run `docker-compose build` and then `docker-compose up -d` to make changes.
+## Monitoring services
+- prometheus (available at 9090 port)
+- cAdvisor (available at 8080 port)
+- Grafana (available at 3000 port)
+Admin username and password can be specified in grafana docker-copmpose section
+```
+environment:
+  - GF_SECURITY_ADMIN_USER=admin
+  - GF_SECURITY_ADMIN_PASSWORD=secret
+```
+Import dashboards from the directory with the same name
