@@ -25,6 +25,10 @@ services:
         delay: 5s
         parallelism: 1
         failure_action: pause
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 150M
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
@@ -41,6 +45,10 @@ services:
         delay: 10s
         parallelism: 2
         failure_action: rollback
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 300M
     networks:
       back_net:
         aliases:
@@ -60,6 +68,10 @@ services:
         delay: 10s
         parallelism: 2
         failure_action: rollback
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 300M
     networks:
       back_net:
         aliases:
