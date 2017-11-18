@@ -29,6 +29,10 @@ services:
         limits:
           cpus: '0.25'
           memory: 150M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 3s
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
@@ -49,6 +53,10 @@ services:
         limits:
           cpus: '0.3'
           memory: 300M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 13
+        delay: 1s
     networks:
       back_net:
         aliases:
@@ -72,6 +80,10 @@ services:
         limits:
           cpus: '0.3'
           memory: 300M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 13
+        delay: 1s
     networks:
       back_net:
         aliases:
