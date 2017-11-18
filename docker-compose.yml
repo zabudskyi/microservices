@@ -21,6 +21,10 @@ services:
           - node.role == worker
       mode: replicated
       replicas: 3
+      update_config:
+        delay: 5s
+        parallelism: 1
+        failure_action: pause
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
@@ -33,6 +37,10 @@ services:
           - node.role == worker
       mode: replicated
       replicas: 3
+      update_config:
+        delay: 10s
+        parallelism: 2
+        failure_action: rollback
     networks:
       back_net:
         aliases:
@@ -48,6 +56,10 @@ services:
           - node.role == worker
       mode: replicated
       replicas: 3
+      update_config:
+        delay: 10s
+        parallelism: 2
+        failure_action: rollback
     networks:
       back_net:
         aliases:
