@@ -2,6 +2,10 @@ version: '3.3'
 services:
   mongo_db:
     image: mongo:3.4.10
+    deploy:
+      placement:
+        constraints:
+          - node.labels.reliability == high
     volumes:
       - post_db:${DB_FOLDER}
     networks:
@@ -11,12 +15,20 @@ services:
           - comment_db_container
   ui:
     image: ${USERNAME}/ui:${UI_TAG}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
       - front_net
   post:
     image: ${USERNAME}/post:${POST_TAG}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
     networks:
       back_net:
         aliases:
@@ -26,6 +38,10 @@ services:
           - post_container
   comment:
     image: ${USERNAME}/comment:${COMMENT_TAG}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
     networks:
       back_net:
         aliases:
