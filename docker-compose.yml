@@ -19,6 +19,8 @@ services:
       placement:
         constraints:
           - node.role == worker
+      mode: replicated
+      replicas: 2
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
@@ -29,6 +31,8 @@ services:
       placement:
         constraints:
           - node.role == worker
+      mode: replicated
+      replicas: 2
     networks:
       back_net:
         aliases:
@@ -42,6 +46,8 @@ services:
       placement:
         constraints:
           - node.role == worker
+      mode: replicated
+      replicas: 2
     networks:
       back_net:
         aliases:
