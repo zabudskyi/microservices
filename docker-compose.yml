@@ -20,7 +20,7 @@ services:
         constraints:
           - node.role == worker
       mode: replicated
-      replicas: 2
+      replicas: 3
     ports:
       - ${HOST_PUMA_PORT}:9292/tcp
     networks:
@@ -32,7 +32,7 @@ services:
         constraints:
           - node.role == worker
       mode: replicated
-      replicas: 2
+      replicas: 3
     networks:
       back_net:
         aliases:
@@ -47,7 +47,7 @@ services:
         constraints:
           - node.role == worker
       mode: replicated
-      replicas: 2
+      replicas: 3
     networks:
       back_net:
         aliases:
