@@ -1,0 +1,100 @@
+version: '3.3'
+services:
+  mongo_db:
+    image: mongo:3.4.10
+    deploy:
+      placement:
+        constraints:
+          - node.labels.reliability == high
+    volumes:
+      - post_db:${DB_FOLDER}
+    networks:
+      back_net:
+        aliases:
+          - post_db_container
+          - comment_db_container
+  ui:
+    image: ${USERNAME}/ui:${UI_TAG}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      mode: replicated
+      replicas: 3
+      update_config:
+        delay: 5s
+        parallelism: 1
+        failure_action: pause
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 150M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 3s
+    ports:
+      - ${HOST_PUMA_PORT}:9292/tcp
+    networks:
+      - front_net
+  post:
+    image: ${USERNAME}/post:${POST_TAG}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      mode: replicated
+      replicas: 3
+      update_config:
+        delay: 10s
+        parallelism: 2
+        failure_action: rollback
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 300M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 13
+        delay: 1s
+    networks:
+      back_net:
+        aliases:
+          - post_container
+      front_net:
+        aliases:
+          - post_container
+  comment:
+    image: ${USERNAME}/comment:${COMMENT_TAG}
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      mode: replicated
+      replicas: 3
+      update_config:
+        delay: 10s
+        parallelism: 2
+        failure_action: rollback
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 300M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 13
+        delay: 1s
+    networks:
+      back_net:
+        aliases:
+          - comment_container
+      front_net:
+        aliases:
+          - comment_container
+
+volumes:
+  post_db:
+
+networks:
+  back_net:
+  front_net:
