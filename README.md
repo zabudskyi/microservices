@@ -90,6 +90,24 @@ Modify alertmanager/config.yml with slack webhook info and run `docker build -t 
 docker-compose up -d
 ```
 Yes, so easy
+## Run app with docker swarm
+### Init docker swarm master
+```
+docker swarm init
+```
+### Join docker swarm workers
+```
+docker swarm join --token <your-token> <manager address>:2377
+```
+### Run app
+Tune deploy options in `docker-compose-swarm.service.yml` file
+```
+docker stack deploy --compose-file=<(docker-compose -f docker-compose-swarm.infra.yml -f docker-compose-swarm.service.yml config 2>/dev/null)  DEV
+```
+### Remove app
+```
+docker stack rm DEV
+```
 ## Debugging
 1. Be sure you are in required docker environment and issued
    ```
