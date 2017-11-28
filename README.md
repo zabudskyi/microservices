@@ -77,7 +77,7 @@ docker network connect front_net comment
 ```
 ## Run app with docker-compose
 ### Prerequisites:
-Modify `.env` to change variables in a way you like. Change USERNAME variable to `<your-login>`
+Fill`.env.example` with your variables and rename it to `.env`
 
 Build the images:
 - ui, post and comment (use `docker_build.sh` script in appropriate folders)
