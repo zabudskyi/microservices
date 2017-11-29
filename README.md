@@ -108,6 +108,51 @@ docker stack deploy --compose-file=<(docker-compose -f docker-compose-swarm.infr
 ```
 docker stack rm DEV
 ```
+## Run app with kubernetes
+### Prerequisites:
+Install kubectl
+```
+wget https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubectl
+```
+```
+chmod +x kubectl
+```
+```
+sudo mv kubectl /usr/local/bin/
+```
+### Run app:
+```
+kubectl apply -f kubernetes/
+```
+### Run app with minikube
+Install virtualbox(not described here) and minikube
+```
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.23.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+```
+Start minikube
+```
+minikube start
+```
+And run
+```
+kubectl apply -f kubernetes/
+```
+## Run app with GKE and Terraform
+### GCE Service account key
+Place your GCP Service account key at `kubernetes/terraform` folder and name it `gce_account.json`. Terraform will use it for Google cloud authentication.
+ [Check this link](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
+### Create Kubernetes cluster with Terraform (go to kubernetes/terraform folder)
+Fill `terraform.tfvars.example` with desired values, remove `.example` part and run `terraform apply`
+### Create `dev` environment and setup service account for kubernetes dashboard
+```
+kubectl apply -f runfirst/
+```
+### Run app with kubernetes in `dev` environment
+```
+kubectl apply -f ./ -n dev
+```
+Run `kubectl proxy` and access kubernetes dashboard at `http://127.0.0.1:8001/ui`. Here you can find proxy port for ui service or just run
+`kubectl describe service ui  -n dev  | grep NodePort`
 ## Debugging
 1. Be sure you are in required docker environment and issued
    ```
