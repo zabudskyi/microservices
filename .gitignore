@@ -7,3 +7,5 @@ kubernetes/terraform/*.tfvars
 kubernetes/terraform/.terraform/
 kubernetes/terraform/*account.json
 kubernetes/terraform/*.tfstate.lock.info
+.env
+
