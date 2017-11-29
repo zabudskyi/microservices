@@ -133,7 +133,7 @@ Start minikube
 ```
 minikube start
 ```
-And run
+Run app
 ```
 kubectl apply -f kubernetes/
 ```
