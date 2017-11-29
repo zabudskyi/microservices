@@ -1,0 +1,7 @@
+project = "<your project id>"
+region = "europe-west1"
+zone = "europe-west1-b"
+node_count = 2
+cluster_name = "cluster-1"
+machine_type= "g1-small"
+disk_size_gb = 10
