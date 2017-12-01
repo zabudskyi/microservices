@@ -7,3 +7,4 @@ kubernetes/terraform/*.tfvars
 kubernetes/terraform/.terraform/
 kubernetes/terraform/*account.json
 kubernetes/terraform/*.tfstate.lock.info
+kubernetes/prerequisites/ui-ingress-secret.yml
