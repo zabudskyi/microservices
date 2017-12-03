@@ -9,7 +9,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 9292
+  - port: 443
     protocol: TCP
     targetPort: 9292
   selector:

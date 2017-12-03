@@ -10,4 +10,4 @@ spec:
   - secretName: ui-ingress
   backend:
     serviceName: ui
-    servicePort: 9292
+    servicePort: 443
