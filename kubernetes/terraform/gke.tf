@@ -34,5 +34,5 @@ resource "google_container_cluster" "primary" {
 resource "google_compute_disk" "default" {
   name  = "reddit-mongo-disk"
   zone  = "${var.zone}"
-  size = "${var.mongodb_disk_size_gb}"
+  size = 25
 }

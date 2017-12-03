@@ -5,4 +5,3 @@ node_count = 2
 cluster_name = "cluster-1"
 machine_type= "g1-small"
 disk_size_gb = 10
-mongodb_disk_size_gb = 25

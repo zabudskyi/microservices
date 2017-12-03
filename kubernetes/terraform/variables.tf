@@ -25,7 +25,3 @@ variable machine_type {
 variable disk_size_gb {
   description = "Disk size GB"
 }
-
-variable mongodb_disk_size_gb {
-  description = "Mongodb disk size GB"
-}
