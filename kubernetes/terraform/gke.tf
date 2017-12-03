@@ -30,3 +30,9 @@ resource "google_container_cluster" "primary" {
     command = "gcloud container clusters get-credentials ${var.cluster_name} --zone ${var.zone} --project ${var.project}"
   }
 }
+
+resource "google_compute_disk" "default" {
+  name  = "reddit-mongo-disk"
+  zone  = "${var.zone}"
+  size = "${var.mongodb_disk_size_gb}"
+}
