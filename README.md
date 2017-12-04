@@ -161,6 +161,8 @@ kubectl apply -f ./ -n dev
 ```
 Run `kubectl proxy` and access kubernetes dashboard at `http://127.0.0.1:8001/ui`. Here you can find proxy port for ui service or just run
 `kubectl describe service ui  -n dev  | grep NodePort`
+### UPDATE
+Run `kubectl get ingress -n dev` to achieve ui service ingress IP. Access app with link `https://INGRESS_IP`
 ## Debugging
 1. Be sure you are in required docker environment and issued
    ```
