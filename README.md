@@ -143,9 +143,17 @@ Place your GCP Service account key at `kubernetes/terraform` folder and name it 
  [Check this link](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
 ### Create Kubernetes cluster with Terraform (go to kubernetes/terraform folder)
 Fill `terraform.tfvars.example` with desired values, remove `.example` part and run `terraform apply`
-### Create `dev` environment and setup service account for kubernetes dashboard
+### Create `dev` environment, add tls support and setup service account for kubernetes dashboard
+Put your secrets to `ui-ingress-secret.yml.example` and remove `.example` part
+You can create these secrets from a file containing your SSL cert/key like so:
 ```
-kubectl apply -f runfirst/
+openssl base64 -in tls.key -out tls.key.b64
+openssl base64 -in tls.crt -out tls.crt.b64
+```
+Just remember to strip newlines after encoding to base64. Kubernetes secrets doesn’t play nice with newlines.
+And then apply prerequisites manifests.
+```
+kubectl apply -f prerequisites/
 ```
 ### Run app with kubernetes in `dev` environment
 ```
@@ -153,6 +161,8 @@ kubectl apply -f ./ -n dev
 ```
 Run `kubectl proxy` and access kubernetes dashboard at `http://127.0.0.1:8001/ui`. Here you can find proxy port for ui service or just run
 `kubectl describe service ui  -n dev  | grep NodePort`
+### UPDATE
+Run `kubectl get ingress -n dev` to achieve ui service ingress IP. Access app with link `https://INGRESS_IP`
 ## Debugging
 1. Be sure you are in required docker environment and issued
    ```
