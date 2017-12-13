@@ -9,3 +9,4 @@ kubernetes/terraform/*account.json
 kubernetes/terraform/*.tfstate.lock.info
 kubernetes/prerequisites/ui-ingress-secret.yml
 .env
+kubernetes/charts/reddit/charts/
