@@ -161,6 +161,16 @@ kubectl apply -f ./ -n dev
 ```
 Run `kubectl proxy` and access kubernetes dashboard at `http://127.0.0.1:8001/ui`. Here you can find proxy port for ui service or just run
 `kubectl describe service ui  -n dev  | grep NodePort`
+## Run app with Helm 
+[Install Helm](https://github.com/kubernetes/helm/releases)
+Launch tiller server
+```
+kubernetes$ kubectl  apply -f helm/tiller.yml && helm init --service-account tiller
+```
+Install app with helm
+```
+kubernetes$ helm install --name reddit charts/reddit/
+```
 ### UPDATE
 Run `kubectl get ingress -n dev` to achieve ui service ingress IP. Access app with link `https://INGRESS_IP`
 ## Debugging
