@@ -15,6 +15,6 @@ post:
 ui:
   image:
     repository: coul/ui
-    tag: 2.1
+    tag: "2.1"
   service:
     externalPort: 9292
