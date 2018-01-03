@@ -1,7 +1,0 @@
-name: ui
-version: 1.0.0
-description: OTUS reddit application UI
-maintainers:
-  - name: Pavlo Zabudskyi
-    email: pavlo.zabudskyi@gmail.com
-appVersion: 1.0
